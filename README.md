@@ -1,33 +1,19 @@
 # HR Analytics — Employee Attrition Analysis
 
-A complete data analysis & visualization project that explores **why employees
-leave a company**, using the IBM HR Analytics Employee Attrition dataset.
-
-**Repo:** <https://github.com/Saddiq15/HR_Attrition_Analysis>
-
----
-
-## Project Overview
-
-- **Goal:** Identify and visualize the key factors driving employee attrition,
-  and provide actionable recommendations to HR.
-- **Dataset:** IBM HR Analytics Employee Attrition (1,470 employees, 35 features).
-- **Tech stack:** Python 3.10+, SQL (SQLite, in-memory), pandas, NumPy,
-  Matplotlib, Seaborn, Plotly, Jupyter.
-- **Deliverables:** A reproducible Jupyter notebook, a runnable Python script,
-  and 8 saved chart PNGs + 2 interactive Plotly charts.
-
----
+A small data-analysis project that explores **why employees leave a company**,
+using the IBM HR Analytics Employee Attrition dataset. The same analysis is
+provided in two equivalent forms: a Jupyter notebook for exploration and a
+plain Python script for one-shot runs.
 
 ## Project Structure
 
 ```
-HR_Attrition_Analysis/
-│
-├── archive/
-│   └── WA_Fn-UseC_-HR-Employee-Attrition.csv   # IBM HR dataset (from Kaggle)
-│
-├── visuals/                                    # Generated automatically on run
+HR_Attrition/
+├── HR_Attrition_Analysis.ipynb            # Main notebook — start here
+├── main.py                                # Same analysis as a runnable script
+├── requirements.txt                       # Python dependencies
+├── WA_Fn-UseC_-HR-Employee-Attrition.csv  # IBM HR dataset (1,470 rows × 35 cols)
+├── visuals/                               # Generated chart PNGs
 │   ├── 01_overall_attrition.png
 │   ├── 02_age_attrition.png
 │   ├── 03_income_attrition.png
@@ -36,173 +22,155 @@ HR_Attrition_Analysis/
 │   ├── 06_jobrole_attrition.png
 │   ├── 07_correlation_heatmap.png
 │   └── 08_years_attrition.png
-│
-├── HR_Attrition_Analysis.ipynb   # Main notebook (START HERE)
-├── firstrun.py                   # Same analysis as a runnable script
-├── requirements.txt              # Python dependencies
-├── config.yaml                   # (optional) project config
-└── README.md                     # This file
+└── README.md                              # This file
 ```
+
+The script and notebook both expect to be run from inside the `HR_Attrition/`
+folder so the relative paths to the CSV and `visuals/` resolve correctly.
 
 ---
 
 ## Quick Start
 
-### 1. Clone the repo
+### 1. Get the code
 ```bash
 git clone https://github.com/Saddiq15/HR_Attrition_Analysis.git
-cd HR_Attrition_Analysis
+cd HR_Attrition_Analysis/HR_Attrition
 ```
 
 ### 2. Create a virtual environment & install dependencies
+
+**Windows (PowerShell):**
 ```powershell
-# Windows (PowerShell)
-python -m venv venv
-.\venv\Scripts\Activate.ps1
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
 ```
 
+**macOS / Linux:**
 ```bash
-# macOS / Linux
-python3 -m venv venv
-source venv/bin/activate
+python3 -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### 3. Get the dataset
-The CSV is already included under `archive/`. If you ever need to re-download it:
-1. Go to <https://www.kaggle.com/datasets/pavansubhasht/ibm-hr-analytics-attrition-dataset>
-2. Download `WA_Fn-UseC_-HR-Employee-Attrition.csv`
-3. Place it at `archive/WA_Fn-UseC_-HR-Employee-Attrition.csv`
+`requirements.txt` pulls in `numpy`, `pandas`, `matplotlib`, `seaborn`,
+`plotly`, and `requests`. To run the notebook you'll also want Jupyter:
+```bash
+pip install jupyter
+```
 
-### 4. Run the analysis — pick one
+### 3. Run the analysis — pick one
 
-**As a notebook (recommended for exploration):**
+**Notebook (recommended for exploration):**
 ```bash
 jupyter notebook HR_Attrition_Analysis.ipynb
-# then: Kernel -> Restart & Run All
+# then: Kernel → Restart & Run All
 ```
 
-**As a script (one-shot, generates all PNGs in `visuals/`):**
+**Script (one-shot, regenerates every PNG in `visuals/`):**
 ```bash
-python firstrun.py
+python main.py
 ```
 
-Both produce the same 8 static charts plus 2 interactive Plotly figures and a
-printed insights/recommendations summary.
+Both produce the same 8 static charts saved to `visuals/`, two interactive
+Plotly figures, and a printed insights/recommendations summary.
 
 ---
 
-## 📊 What's Inside the Notebook
+## What the Analysis Does
 
-| Step | Description |
-|------|-------------|
-| 1 | Install & Import Libraries |
-| 2 | Load Dataset |
-| 3 | SQL Exploration (4 queries) |
-| 4 | Data Cleaning & Feature Engineering |
-| 5 | Exploratory Data Analysis |
-| 6 | 10 Visualizations (Static + Interactive) |
-| 7 | Key Insights & HR Recommendations |
+| Step | What happens |
+|------|--------------|
+| 1 | Imports libraries and configures the plot style |
+| 2 | Loads the IBM HR CSV into a pandas DataFrame |
+| 3 | Loads the data into an in-memory **SQLite** DB and runs 4 SQL queries |
+| 4 | Cleans the data and engineers `AttritionBinary`, `AgeGroup`, `IncomeGroup` |
+| 5 | EDA — distribution of attrition by department, role, gender, marital status, overtime |
+| 6 | 10 visualizations (8 saved as PNG + 2 interactive Plotly) |
+| 7 | Prints key insights and HR recommendations |
 
----
+### SQL queries
+1. Overall attrition count (Yes vs No, with %)
+2. Attrition rate by department
+3. Average income / age / tenure / job satisfaction by attrition
+4. Top 5 job roles ranked by attrition rate
 
-## 🔍 SQL Queries Included
-
-1. **Overall Attrition Count** — How many employees left vs stayed?
-2. **Attrition by Department** — Which department has the highest turnover?
-3. **Average Key Metrics by Attrition** — Income, age, satisfaction
-4. **Top Job Roles with Highest Attrition** — Which roles are most at risk?
-
----
-
-## 📈 Visualizations Created
-
-1. 🥧 Overall Attrition Pie Chart + Department Bar Chart
-2. 📊 Age Group vs Attrition
-3. 📦 Monthly Income Boxplot by Attrition
-4. ⏰ Overtime vs Attrition
-5. 😊 Job Satisfaction & Work-Life Balance vs Attrition
-6. 👔 Attrition Rate by Job Role
-7. 🌡️ Correlation Heatmap
-8. 📅 Years at Company vs Attrition
-9. 🎯 Interactive: Income by Dept & Attrition (Plotly)
-10. 🔵 Interactive: Age vs Income Scatter Plot (Plotly)
+### Visualizations
+1. Overall attrition pie + department bar
+2. Age group vs attrition
+3. Monthly income boxplot by attrition
+4. Overtime vs attrition
+5. Job satisfaction & work-life balance vs attrition
+6. Attrition rate by job role
+7. Correlation heatmap of key numeric features
+8. Years at company vs attrition (histogram)
+9. *(interactive)* Income by department & attrition (Plotly box)
+10. *(interactive)* Age vs income, sized by years at company (Plotly scatter)
 
 ---
 
-## 💡 Key Findings
+## Key Findings
 
-1. **Overall attrition rate: ~16%** — roughly 1 in 6 employees leaves
-2. **Overtime employees** are 3x more likely to leave
-3. **Young employees (18-25)** have the highest attrition risk
-4. **Low job satisfaction** strongly correlates with leaving
-5. **Employees who leave earn ~$2,000 less/month** on average
+- **Overall attrition: ~16%** — roughly 1 in 6 employees leaves.
+- **Overtime** employees are about **3× more likely** to leave (≈30% vs ≈10%).
+- **Young employees (18-25)** have the highest attrition rate (~36%).
+- **Low job satisfaction (score 1)** roughly doubles the leave rate vs **high satisfaction (score 4)**.
+- Employees who left earn on average **~$2,000/month less** than those who stayed.
 
----
+## HR Recommendations
 
-## ✅ HR Recommendations
-
-- Review and limit mandatory overtime
-- Create a Young Talent Retention Program
-- Conduct regular satisfaction surveys
-- Review salary benchmarks for high-attrition roles
-- Focus on employee experience in first 1-3 years
+- Review and limit mandatory overtime, especially in high-attrition departments.
+- Build a Young Talent retention program (mentoring, clear progression paths).
+- Run regular satisfaction pulse surveys and act on low scores quickly.
+- Benchmark salaries for the highest-attrition roles (Sales Reps, Lab Technicians).
+- Invest in employee experience during the first 1–3 years at the company.
 
 ---
 
-## Dataset Details
+## Dataset
 
 | Property | Value |
 |----------|-------|
-| Source | IBM HR Analytics (via Kaggle) |
-| Rows | 1,470 employees |
-| Columns | 35 features |
-| Target | `Attrition` (Yes / No) |
+| Source   | IBM HR Analytics Employee Attrition (Kaggle) |
+| Rows     | 1,470 |
+| Columns  | 35 |
+| Target   | `Attrition` (Yes / No) |
 
-**Key columns used:**
-- `Attrition` — target variable (Yes/No)
-- `Age`, `Gender`, `MaritalStatus`
-- `Department`, `JobRole`, `JobLevel`
-- `MonthlyIncome`, `PercentSalaryHike`
-- `JobSatisfaction`, `WorkLifeBalance`, `JobInvolvement`
-- `OverTime`, `YearsAtCompany`, `YearsSinceLastPromotion`
+Original Kaggle page:
+<https://www.kaggle.com/datasets/pavansubhasht/ibm-hr-analytics-attrition-dataset>
+
+Key columns used by the analysis: `Attrition`, `Age`, `Gender`, `MaritalStatus`,
+`Department`, `JobRole`, `JobLevel`, `MonthlyIncome`, `PercentSalaryHike`,
+`JobSatisfaction`, `WorkLifeBalance`, `JobInvolvement`, `OverTime`,
+`YearsAtCompany`, `YearsSinceLastPromotion`.
 
 ---
 
 ## Reproducibility Notes
 
-A few small bug fixes were applied to make the notebook/script run reliably on
-any machine:
+A few small details make the project run cleanly on a fresh clone:
 
-- The CSV path is now **relative** (`archive/WA_Fn-UseC_-HR-Employee-Attrition.csv`)
-  instead of a hard-coded absolute path.
-- The `visuals/` directory is created automatically with `os.makedirs(..., exist_ok=True)`
-  so chart saving never fails on a fresh clone.
-- `stdout` is reconfigured to UTF-8 so the emoji in `print()` calls don't raise
-  `UnicodeEncodeError` on Windows consoles (default `cp1252`).
-- `pd.cut` for `AgeGroup` uses `include_lowest=True` so 18-year-olds aren't
-  silently dropped, and `IncomeGroup` uses `np.inf` as its upper bound.
+- All paths are **relative to the project folder**, so the code works on any
+  machine without editing.
+- `main.py` resolves the CSV and `visuals/` paths relative to the script file
+  itself, so it also works when invoked from a different working directory.
+- `visuals/` is auto-created (`os.makedirs(..., exist_ok=True)`), so saving
+  charts never fails on a clean checkout.
+- `stdout` is reconfigured to UTF-8 so emoji in `print()` calls don't trip the
+  `cp1252` Windows console.
+- `pd.cut` for `AgeGroup` uses `include_lowest=True` (so age 18 isn't dropped),
+  and `IncomeGroup`'s upper bound is `np.inf` to avoid silent data loss.
 
 ---
 
-## Next Steps (Optional Enhancements)
+## Possible Next Steps
 
-- Train a **machine-learning model** (logistic regression / random forest /
-  gradient boosting) to predict attrition probability per employee.
-- Build a **Streamlit dashboard** for interactive exploration.
+- Train a **classifier** (logistic regression / random forest / gradient
+  boosting) to predict attrition probability per employee.
+- Wrap the EDA in a **Streamlit** dashboard for interactive exploration.
 - Swap the in-memory SQLite layer for **PostgreSQL** for a production setup.
-- Publish a **Power BI / Tableau** version of the visualizations.
-
----
-
-## License
-
-Released under the MIT License — see `LICENSE` if present, otherwise feel free
-to reuse with attribution.
-
-The IBM HR Analytics dataset is provided by IBM and distributed via Kaggle
-under its own terms.
+- Publish a **Power BI / Tableau** version of the visuals.
 
 ---
 
