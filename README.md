@@ -1,27 +1,33 @@
-# 🏢 HR Analytics — Employee Attrition Analysis
-### A Complete Data Analysis & Visualization Portfolio Project
+# HR Analytics — Employee Attrition Analysis
+
+A complete data analysis & visualization project that explores **why employees
+leave a company**, using the IBM HR Analytics Employee Attrition dataset.
+
+**Repo:** <https://github.com/Saddiq15/HR_Attrition_Analysis>
 
 ---
 
-## 📌 Project Overview
+## Project Overview
 
-**Goal:** Identify and visualize the key factors driving employee attrition at a company, and provide actionable recommendations to HR.
-
-**Dataset:** IBM HR Analytics Employee Attrition Dataset  
-**Tools:** Python, SQL (SQLite), Pandas, Matplotlib, Seaborn, Plotly  
-**Level:** Beginner–Intermediate
+- **Goal:** Identify and visualize the key factors driving employee attrition,
+  and provide actionable recommendations to HR.
+- **Dataset:** IBM HR Analytics Employee Attrition (1,470 employees, 35 features).
+- **Tech stack:** Python 3.10+, SQL (SQLite, in-memory), pandas, NumPy,
+  Matplotlib, Seaborn, Plotly, Jupyter.
+- **Deliverables:** A reproducible Jupyter notebook, a runnable Python script,
+  and 8 saved chart PNGs + 2 interactive Plotly charts.
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
-hr-attrition-project/
+HR_Attrition_Analysis/
 │
-├── data/
-│   └── WA_Fn-UseC_-HR-Employee-Attrition.csv   ← Download from Kaggle
+├── archive/
+│   └── WA_Fn-UseC_-HR-Employee-Attrition.csv   # IBM HR dataset (from Kaggle)
 │
-├── visuals/
+├── visuals/                                    # Generated automatically on run
 │   ├── 01_overall_attrition.png
 │   ├── 02_age_attrition.png
 │   ├── 03_income_attrition.png
@@ -31,37 +37,59 @@ hr-attrition-project/
 │   ├── 07_correlation_heatmap.png
 │   └── 08_years_attrition.png
 │
-├── HR_Attrition_Analysis.ipynb   ← Main notebook (START HERE)
-└── README.md                     ← This file
+├── HR_Attrition_Analysis.ipynb   # Main notebook (START HERE)
+├── firstrun.py                   # Same analysis as a runnable script
+├── requirements.txt              # Python dependencies
+├── config.yaml                   # (optional) project config
+└── README.md                     # This file
 ```
 
 ---
 
-## ⚙️ Setup Instructions
+## Quick Start
 
-### Step 1: Install Python
-Make sure Python 3.8+ is installed. Download from https://python.org
-
-### Step 2: Install Required Libraries
-Open your terminal and run:
+### 1. Clone the repo
 ```bash
-pip install pandas numpy matplotlib seaborn plotly jupyter
+git clone https://github.com/Saddiq15/HR_Attrition_Analysis.git
+cd HR_Attrition_Analysis
 ```
 
-### Step 3: Download the Dataset
-1. Go to: https://www.kaggle.com/datasets/pavansubhasht/ibm-hr-analytics-attrition-dataset
-2. Sign in / create a free Kaggle account
-3. Click **Download**
-4. Place the CSV file inside the `data/` folder
-
-### Step 4: Launch Jupyter Notebook
-```bash
-jupyter notebook
+### 2. Create a virtual environment & install dependencies
+```powershell
+# Windows (PowerShell)
+python -m venv venv
+.\venv\Scripts\Activate.ps1
+pip install -r requirements.txt
 ```
-Then open `HR_Attrition_Analysis.ipynb`
 
-### Step 5: Run All Cells
-Click **Kernel → Restart & Run All** to execute the entire notebook.
+```bash
+# macOS / Linux
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
+### 3. Get the dataset
+The CSV is already included under `archive/`. If you ever need to re-download it:
+1. Go to <https://www.kaggle.com/datasets/pavansubhasht/ibm-hr-analytics-attrition-dataset>
+2. Download `WA_Fn-UseC_-HR-Employee-Attrition.csv`
+3. Place it at `archive/WA_Fn-UseC_-HR-Employee-Attrition.csv`
+
+### 4. Run the analysis — pick one
+
+**As a notebook (recommended for exploration):**
+```bash
+jupyter notebook HR_Attrition_Analysis.ipynb
+# then: Kernel -> Restart & Run All
+```
+
+**As a script (one-shot, generates all PNGs in `visuals/`):**
+```bash
+python firstrun.py
+```
+
+Both produce the same 8 static charts plus 2 interactive Plotly figures and a
+printed insights/recommendations summary.
 
 ---
 
@@ -123,26 +151,17 @@ Click **Kernel → Restart & Run All** to execute the entire notebook.
 
 ---
 
-## 🚀 Next Steps (Optional Enhancements)
-
-- Build a **Machine Learning model** to predict attrition probability
-- Create a **Streamlit web dashboard** for interactive exploration
-- Use **PostgreSQL** instead of SQLite for a production setup
-- Add **Power BI / Tableau** version of the visualizations
-
----
-
-## 📚 Dataset Details
+## Dataset Details
 
 | Property | Value |
 |----------|-------|
 | Source | IBM HR Analytics (via Kaggle) |
 | Rows | 1,470 employees |
 | Columns | 35 features |
-| Target | Attrition (Yes / No) |
+| Target | `Attrition` (Yes / No) |
 
 **Key columns used:**
-- `Attrition` — Target variable (Yes/No)
+- `Attrition` — target variable (Yes/No)
 - `Age`, `Gender`, `MaritalStatus`
 - `Department`, `JobRole`, `JobLevel`
 - `MonthlyIncome`, `PercentSalaryHike`
@@ -151,4 +170,40 @@ Click **Kernel → Restart & Run All** to execute the entire notebook.
 
 ---
 
-*Built as a Data Science portfolio project.*
+## Reproducibility Notes
+
+A few small bug fixes were applied to make the notebook/script run reliably on
+any machine:
+
+- The CSV path is now **relative** (`archive/WA_Fn-UseC_-HR-Employee-Attrition.csv`)
+  instead of a hard-coded absolute path.
+- The `visuals/` directory is created automatically with `os.makedirs(..., exist_ok=True)`
+  so chart saving never fails on a fresh clone.
+- `stdout` is reconfigured to UTF-8 so the emoji in `print()` calls don't raise
+  `UnicodeEncodeError` on Windows consoles (default `cp1252`).
+- `pd.cut` for `AgeGroup` uses `include_lowest=True` so 18-year-olds aren't
+  silently dropped, and `IncomeGroup` uses `np.inf` as its upper bound.
+
+---
+
+## Next Steps (Optional Enhancements)
+
+- Train a **machine-learning model** (logistic regression / random forest /
+  gradient boosting) to predict attrition probability per employee.
+- Build a **Streamlit dashboard** for interactive exploration.
+- Swap the in-memory SQLite layer for **PostgreSQL** for a production setup.
+- Publish a **Power BI / Tableau** version of the visualizations.
+
+---
+
+## License
+
+Released under the MIT License — see `LICENSE` if present, otherwise feel free
+to reuse with attribution.
+
+The IBM HR Analytics dataset is provided by IBM and distributed via Kaggle
+under its own terms.
+
+---
+
+*Built as a data analytics portfolio project by [@Saddiq15](https://github.com/Saddiq15).*
